@@ -107,10 +107,15 @@ const deleteProduct = (productId) => {
     }
   })
 }
-const getAllProduct = (limit = 2, page = 1) => {
+const getAllProduct = (limit = 5, page = 1) => {
   return new Promise(async (resolve, reject) => {
     try {
       const totalProduct = await Product.countDocuments();
+      // console.log(limit);
+      // console.log(page);
+      console.log(Math.ceil(totalProduct / limit));
+
+
       // if (filter) {
       // const lable = filter[0];
       // const allProduct = await Product.find();
@@ -140,7 +145,8 @@ const getAllProduct = (limit = 2, page = 1) => {
         message: 'GET ALL PRODUCT SUCCESS',
         data: allProduct,
         pageCurrent: page,
-        totalPage: Math.ceil(totalProduct / limit),
+        totalPages: Math.ceil(totalProduct / limit),
+        totalProduct,
       })
 
 
@@ -155,4 +161,4 @@ module.exports = {
   getDetailsProduct,
   deleteProduct,
   getAllProduct,
-}
+} 

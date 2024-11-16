@@ -86,10 +86,7 @@ const getDetailsProduct = async (req, res) => {
 const getAllProduct = async (req, res) => {
     try {
         const { limit, page, sort, filter } = req.query;
-        console.log('limit', limit);
-        console.log('page', page);
-
-        const response = await ProductService.getAllProduct(Number(limit || 5), Number(page || 1));
+        const response = await ProductService.getAllProduct(Number(limit) || 5, Number(page) || 1);
         return res.status(200).json(response)
     } catch (error) {
         return res.status(404).json({
