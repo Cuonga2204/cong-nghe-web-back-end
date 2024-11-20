@@ -6,6 +6,10 @@ const cartItemSchema = new mongoose.Schema({
         ref: 'Product', // Liên kết với model Product
         required: true,
     },
+    nameProduct: {
+        type: String,
+        required: true,
+    },
     quantity: {
         type: Number,
         required: true,

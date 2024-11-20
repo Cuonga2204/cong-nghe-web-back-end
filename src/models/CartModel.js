@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 const cartItemSchema = require('./CartItem'); // Import schema CartItem
 
 const cartSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Liên kết với model User
+        required: true,
+    },
+    userName: {
+        type: mongoose.Schema.Types.String,
         required: true,
     },
     items: [cartItemSchema], // Mảng các sản phẩm trong giỏ hàng
