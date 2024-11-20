@@ -113,7 +113,7 @@ const getAllProduct = (limit = 5, page = 1) => {
       const totalProduct = await Product.countDocuments();
       // console.log(limit);
       // console.log(page);
-      console.log(Math.ceil(totalProduct / limit));
+
 
 
       // if (filter) {
