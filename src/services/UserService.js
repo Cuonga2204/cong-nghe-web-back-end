@@ -2,40 +2,7 @@ const User = require('../models/UserModel')
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const { genneralAccessToken, genneralRefreshToken } = require('./JwtService');
-const createUser = (newUser) => {
-  return new Promise(async (resolve, reject) => {
-    const { name, email, password, confirmPassword, phone } = newUser
-    try {
-      const checkUser = await User.findOne({
-        email: email
-      })
-      if (checkUser !== null) {
-        return resolve({
-          status: 'OK',
-          message: 'this email is already'
-        })
-      }
-      const hash = bcrypt.hashSync(password, 10);
 
-      const createdUser = await User.create({
-        name,
-        email,
-        password: hash,
-        phone
-      })
-      if (createUser) {
-        resolve({
-          status: 'OK',
-          message: 'CREATE SUCCESS',
-          data: createdUser
-        })
-      }
-
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
 
 const loginUser = (loginUser) => {
   return new Promise(async (resolve, reject) => {
@@ -82,96 +49,10 @@ const loginUser = (loginUser) => {
     }
   })
 }
-const updateUser = (userId, data) => {
-  return new Promise(async (resolve, reject) => {
 
-    try {
-      const checkUser = await User.findOne({
-        _id: userId
-      })
-      if (checkUser === null) {
-        resolve({
-          status: 'OK',
-          message: 'userId is required',
-        })
-      }
-      const updatedUser = await User.findByIdAndUpdate(userId, data);
-      console.log(updatedUser);
-      resolve({
-        status: 'OK',
-        message: 'UPDATE SUCCESS',
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
-const deleteUser = (userId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const checkUser = await User.findOne({
-        _id: userId
-      })
-      if (checkUser === null) {
-        resolve({
-          status: 'OK',
-          message: 'userId is required',
-        })
-      }
-      const deletedUser = await User.findByIdAndDelete(userId);
-      console.log("user đã xoá", deletedUser);
-      resolve({
-        status: 'OK',
-        message: 'DELETE SUCCESS',
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
-const getAllUser = () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const allUser = await User.find();
-      resolve({
-        status: 'OK',
-        message: 'GET ALL USER SUCCESS',
-        data: allUser
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
-const getDetailsUser = (userId) => {
-  return new Promise(async (resolve, reject) => {
-    const user = await User.findOne({
-      _id: userId
-    })
-    if (user === null) {
-      resolve({
-        status: 'OK',
-        message: 'User is not defind',
-      })
-    }
-    try {
-      const allUser = await User.findOne()
-      resolve({
-        status: 'OK',
-        message: 'GET DETAILS USER SUCCESS',
-        data: user
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
 
 module.exports = {
-  createUser,
+
   loginUser,
-  updateUser,
-  deleteUser,
-  getAllUser,
-  getDetailsUser,
+
 }
