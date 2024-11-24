@@ -131,10 +131,49 @@ const deleteUser = (userId) => {
     }
   })
 }
+const getAllUser = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allUser = await User.find();
+      resolve({
+        status: 'OK',
+        message: 'GET ALL USER SUCCESS',
+        data: allUser
+      })
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+const getDetailsUser = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    const user = await User.findOne({
+      _id: userId
+    })
+    if (user === null) {
+      resolve({
+        status: 'OK',
+        message: 'User is not defind',
+      })
+    }
+    try {
+      const allUser = await User.findOne()
+      resolve({
+        status: 'OK',
+        message: 'GET DETAILS USER SUCCESS',
+        data: user
+      })
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
 
 module.exports = {
   createUser,
   loginUser,
   updateUser,
   deleteUser,
+  getAllUser,
+  getDetailsUser,
 }
