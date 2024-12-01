@@ -37,21 +37,36 @@ const createProduct = (newProduct) => {
         }
     })
 }
-const updateProduct = (productId, data) => {
+const updateProduct = (productId, data, imageUrl) => {
     return new Promise(async (resolve, reject) => {
 
         try {
             const checkProduct = await Product.findOne({
                 _id: productId
             })
-            if (checkProduct !== null) {
+            if (checkProduct === null) {
                 resolve({
                     status: 'OK',
                     message: 'productId is required',
                 })
             }
+
+            if (imageUrl) {
+                data.imageUrl = imageUrl;
+
+                // Xóa ảnh cũ nếu tồn tại
+                if (checkProduct.imageUrl && checkProduct.imageUrl !== "/uploads/images/default.png") {
+                    const fs = require("fs");
+                    const path = require("path");
+                    const oldImagePath = path.join(__dirname, `../..${checkProduct.imageUrl}`);
+                    fs.unlink(oldImagePath, (err) => {
+                        if (err) console.error("Failed to delete old image:", err.message);
+                    });
+                }
+            }
+
             const updatedProduct = await Product.findByIdAndUpdate(productId, data);
-            console.log(updatedProduct);
+            // console.log(updatedProduct);
             resolve({
                 status: 'OK',
                 message: 'UPDATE PRODUCT SUCCESS',
@@ -127,10 +142,30 @@ const getAllProduct = (limit = 5, page = 1) => {
         }
     })
 }
+const getAllProductHomePage = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const totalProduct = await Product.countDocuments();
+            const allProduct = await Product.find();
+            console.log(allProduct)
+            resolve({
+                status: 'OK',
+                message: 'GET ALL PRODUCT SUCCESS',
+                data: allProduct,
+                totalProduct,
+            })
+
+
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     createProduct,
     updateProduct,
     getDetailsProduct,
     deleteProduct,
     getAllProduct,
+    getAllProductHomePage,
 } 
